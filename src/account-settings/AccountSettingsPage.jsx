@@ -149,9 +149,13 @@ class AccountSettingsPage extends React.Component {
       value: key,
       label: this.props.intl.formatMessage(messages[`account.settings.field.education.levels.${key || 'empty'}`]),
     })),
-    genderOptions: GENDER_OPTIONS.map(key => ({
+   genderOptions: GENDER_OPTIONS
+    .filter(key => key !== 'o')  
+    .map(key => ({
       value: key,
-      label: this.props.intl.formatMessage(messages[`account.settings.field.gender.options.${key || 'empty'}`]),
+      label: this.props.intl.formatMessage(
+        messages[`account.settings.field.gender.options.${key || 'empty'}`]
+      ),
     })),
     workExperienceOptions: WORK_EXPERIENCE_OPTIONS.map(key => ({
       value: key,
