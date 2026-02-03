@@ -101,11 +101,7 @@ export class DeleteAccount extends React.Component {
                   { siteName: getConfig().SITE_NAME },
                 )}
               </p>
-              <p>
-                <Hyperlink destination="https://help.edx.org/edxlearner/s/topic/0TOQq0000001UdZOAU/account-basics">
-                  {intl.formatMessage(messages['account.settings.delete.account.text.change.instead'])}
-                </Hyperlink>
-              </p>
+             
               <p>
                 <Button
                   variant="outline-danger"

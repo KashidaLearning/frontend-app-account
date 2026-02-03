@@ -61,15 +61,7 @@ exports[`DeleteAccount should match unverified account section snapshot 1`] = `
   >
     Warning: Account deletion is permanent. Please read the above carefully before proceeding. This is an irreversible action, and you will no longer be able to use the same email on localhost.
   </p>
-  <p>
-    <a
-      className="pgn__hyperlink default-link standalone-link"
-      href="https://help.edx.org/edxlearner/s/topic/0TOQq0000001UdZOAU/account-basics"
-      target="_self"
-    >
-      Want to change your email, name, or password instead?
-    </a>
-  </p>
+ 
   <p>
     <button
       className="btn btn-outline-danger"
@@ -141,15 +133,7 @@ exports[`DeleteAccount should match unverified account section snapshot 2`] = `
   >
     Warning: Account deletion is permanent. Please read the above carefully before proceeding. This is an irreversible action, and you will no longer be able to use the same email on localhost.
   </p>
-  <p>
-    <a
-      className="pgn__hyperlink default-link standalone-link"
-      href="https://help.edx.org/edxlearner/s/topic/0TOQq0000001UdZOAU/account-basics"
-      target="_self"
-    >
-      Want to change your email, name, or password instead?
-    </a>
-  </p>
+
   <p>
     <button
       className="btn btn-outline-danger"
