@@ -14,7 +14,7 @@ import {
   getLanguageList,
 } from '@edx/frontend-platform/i18n';
 import {
-  Hyperlink, Icon, Alert,
+  Container, Hyperlink, Icon, Alert,
 } from '@openedx/paragon';
 import { CheckCircle, Error, WarningFilled } from '@openedx/paragon/icons';
 
@@ -50,7 +50,7 @@ import {
   FIELD_LABELS,
 } from './data/constants';
 import { fetchSiteLanguages } from './site-language';
-import { fetchCourseList } from '../notification-preferences/data/thunks';
+import { fetchNotificationPreferences } from '../notification-preferences/data/thunks';
 import NotificationSettings from '../notification-preferences/NotificationSettings';
 import { withLocation, withNavigate } from './hoc';
 import AdditionalProfileFieldsSlot from '../plugin-slots/AdditionalProfileFieldsSlot';
@@ -76,7 +76,7 @@ class AccountSettingsPage extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchCourseList();
+    this.props.fetchNotificationPreferences();
     this.props.fetchSettings();
     this.props.fetchSiteLanguages(this.props.navigate);
     sendTrackingLogEvent('edx.user.settings.viewed', {
@@ -121,18 +121,30 @@ class AccountSettingsPage extends React.Component {
   });
 
   getLocalizedOptions = memoize((locale, country) => ({
-    countryOptions: [{
-      value: '',
-      label: this.props.intl.formatMessage(messages['account.settings.field.country.options.empty']),
+   countryOptions: [{
+  value: '',
+  label: this.props.intl.formatMessage(
+    messages['account.settings.field.country.options.empty']
+  ),
     }].concat(
       this.removeDisabledCountries(
-        getCountryList(locale).map(({ code, name }) => ({
-          value: code,
-          label: name,
-          disabled: this.isDisabledCountry(code),
-        })),
+        getCountryList(locale)
+          .filter(({ code }) => code !== 'IL')
+
+          .map(({ code, name }) => ({
+            value: code,
+            label: code === 'SA' ? 'المملكة العربية السعودية' : name,
+            disabled: this.isDisabledCountry(code),
+          }))
+
+          .sort((a, b) => {
+            if (a.value === 'SA') return -1;
+            if (b.value === 'SA') return 1;
+            return 0;
+          }),
       ),
     ),
+
     stateOptions: [{
       value: '',
       label: this.props.intl.formatMessage(messages['account.settings.field.state.options.empty']),
@@ -149,14 +161,14 @@ class AccountSettingsPage extends React.Component {
       value: key,
       label: this.props.intl.formatMessage(messages[`account.settings.field.education.levels.${key || 'empty'}`]),
     })),
-   genderOptions: GENDER_OPTIONS
-    .filter(key => key !== 'o')  
-    .map(key => ({
-      value: key,
-      label: this.props.intl.formatMessage(
-        messages[`account.settings.field.gender.options.${key || 'empty'}`]
-      ),
-    })),
+    genderOptions: GENDER_OPTIONS
+      .filter(key => key !== 'o')   
+      .map(key => ({
+        value: key,
+        label: this.props.intl.formatMessage(
+          messages[`account.settings.field.gender.options.${key || 'empty'}`]
+        ),
+      })),
     workExperienceOptions: WORK_EXPERIENCE_OPTIONS.map(key => ({
       value: key,
       label: key === '' ? this.props.intl.formatMessage(messages['account.settings.field.work.experience.options.empty']) : key,
@@ -728,16 +740,13 @@ class AccountSettingsPage extends React.Component {
             {...editableFieldProps}
           />
           )}
-          <EditableSelectField
-            name="language_proficiencies"
-            type="select"
-            value={this.props.formValues.language_proficiencies}
-            options={languageProficiencyOptions}
-            label={this.props.intl.formatMessage(messages['account.settings.field.language.proficiencies'])}
-            emptyLabel={this.props.intl.formatMessage(messages['account.settings.field.language.proficiencies.empty'])}
-            {...editableFieldProps}
-          />
-
+         <EditableField
+          name="language_proficiencies"
+          type="text"
+          value="العربية"
+          label={this.props.intl.formatMessage(messages['account.settings.field.language.proficiencies'])}
+          isEditable={false}
+        />
           <AdditionalProfileFieldsSlot />
         </div>
         <div className="account-section pt-3 mb-6" id="social-media">
@@ -768,11 +777,11 @@ class AccountSettingsPage extends React.Component {
             {...editableFieldProps}
           />
           <EditableField
-            name="social_link_twitter"
+            name="social_link_x"
             type="text"
-            value={this.props.formValues.social_link_twitter}
-            label={this.props.intl.formatMessage(messages['account.settings.field.social.platform.name.twitter'])}
-            emptyLabel={this.props.intl.formatMessage(messages['account.settings.field.social.platform.name.twitter.empty'])}
+            value={this.props.formValues.social_link_x}
+            label={this.props.intl.formatMessage(messages['account.settings.field.social.platform.name.xTwitter'])}
+            emptyLabel={this.props.intl.formatMessage(messages['account.settings.field.social.platform.name.xTwitter.empty'])}
             {...editableFieldProps}
           />
         </div>
@@ -786,15 +795,14 @@ class AccountSettingsPage extends React.Component {
           </h2>
 
           <BetaLanguageBanner />
-          <EditableSelectField
+          <EditableField
             name="siteLanguage"
-            type="select"
-            options={this.props.siteLanguageOptions}
-            value={this.props.siteLanguage.draft !== undefined ? this.props.siteLanguage.draft : this.context.locale}
+            type="text"
+            value="العربية"
             label={this.props.intl.formatMessage(messages['account.settings.field.site.language'])}
-            helpText={this.props.intl.formatMessage(messages['account.settings.field.site.language.help.text'])}
-            {...editableFieldProps}
+            isEditable={false}
           />
+
           <EditableSelectField
             name="time_zone"
             type="select"
@@ -859,24 +867,24 @@ class AccountSettingsPage extends React.Component {
     } = this.props;
 
     return (
-      <div className="page__account-settings container-fluid py-5">
+      <Container className="page__account-settings py-5" size="xl">
         {this.renderDuplicateTpaProviderMessage()}
         <h1 className="mb-4">
           {this.props.intl.formatMessage(messages['account.settings.page.heading'])}
         </h1>
         <div>
           <div className="row">
-            <div className="col-md-2">
+            <div className="col-md-3">
               <JumpNav />
             </div>
-            <div className="col-md-10">
+            <div className="col-md-9">
               {loading ? this.renderLoading() : null}
               {loaded ? this.renderContent() : null}
               {loadingError ? this.renderError() : null}
             </div>
           </div>
         </div>
-      </div>
+      </Container>
     );
   }
 }
@@ -909,7 +917,7 @@ AccountSettingsPage.propTypes = {
     phone_number: PropTypes.string,
     social_link_linkedin: PropTypes.string,
     social_link_facebook: PropTypes.string,
-    social_link_twitter: PropTypes.string,
+    social_link_x: PropTypes.string,
     time_zone: PropTypes.string,
     state: PropTypes.string,
     useVerifiedNameForCerts: PropTypes.bool.isRequired,
@@ -952,7 +960,7 @@ AccountSettingsPage.propTypes = {
   saveSettings: PropTypes.func.isRequired,
   fetchSettings: PropTypes.func.isRequired,
   beginNameChange: PropTypes.func.isRequired,
-  fetchCourseList: PropTypes.func.isRequired,
+  fetchNotificationPreferences: PropTypes.func.isRequired,
   tpaProviders: PropTypes.arrayOf(PropTypes.shape({
     connected: PropTypes.bool,
   })),
@@ -1017,7 +1025,7 @@ AccountSettingsPage.defaultProps = {
 };
 
 export default withLocation(withNavigate(connect(accountSettingsPageSelector, {
-  fetchCourseList,
+  fetchNotificationPreferences,
   fetchSettings,
   saveSettings,
   saveMultipleSettings,
