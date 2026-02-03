@@ -121,18 +121,30 @@ class AccountSettingsPage extends React.Component {
   });
 
   getLocalizedOptions = memoize((locale, country) => ({
-    countryOptions: [{
-      value: '',
-      label: this.props.intl.formatMessage(messages['account.settings.field.country.options.empty']),
+   countryOptions: [{
+  value: '',
+  label: this.props.intl.formatMessage(
+    messages['account.settings.field.country.options.empty']
+  ),
     }].concat(
       this.removeDisabledCountries(
-        getCountryList(locale).map(({ code, name }) => ({
-          value: code,
-          label: name,
-          disabled: this.isDisabledCountry(code),
-        })),
+        getCountryList(locale)
+          .filter(({ code }) => code !== 'IL')
+
+          .map(({ code, name }) => ({
+            value: code,
+            label: code === 'SA' ? 'المملكة العربية السعودية' : name,
+            disabled: this.isDisabledCountry(code),
+          }))
+
+          .sort((a, b) => {
+            if (a.value === 'SA') return -1;
+            if (b.value === 'SA') return 1;
+            return 0;
+          }),
       ),
     ),
+
     stateOptions: [{
       value: '',
       label: this.props.intl.formatMessage(messages['account.settings.field.state.options.empty']),
@@ -149,10 +161,14 @@ class AccountSettingsPage extends React.Component {
       value: key,
       label: this.props.intl.formatMessage(messages[`account.settings.field.education.levels.${key || 'empty'}`]),
     })),
-    genderOptions: GENDER_OPTIONS.map(key => ({
-      value: key,
-      label: this.props.intl.formatMessage(messages[`account.settings.field.gender.options.${key || 'empty'}`]),
-    })),
+    genderOptions: GENDER_OPTIONS
+      .filter(key => key !== 'o')   
+      .map(key => ({
+        value: key,
+        label: this.props.intl.formatMessage(
+          messages[`account.settings.field.gender.options.${key || 'empty'}`]
+        ),
+      })),
     workExperienceOptions: WORK_EXPERIENCE_OPTIONS.map(key => ({
       value: key,
       label: key === '' ? this.props.intl.formatMessage(messages['account.settings.field.work.experience.options.empty']) : key,
@@ -724,16 +740,13 @@ class AccountSettingsPage extends React.Component {
             {...editableFieldProps}
           />
           )}
-          <EditableSelectField
-            name="language_proficiencies"
-            type="select"
-            value={this.props.formValues.language_proficiencies}
-            options={languageProficiencyOptions}
-            label={this.props.intl.formatMessage(messages['account.settings.field.language.proficiencies'])}
-            emptyLabel={this.props.intl.formatMessage(messages['account.settings.field.language.proficiencies.empty'])}
-            {...editableFieldProps}
-          />
-
+         <EditableField
+          name="language_proficiencies"
+          type="text"
+          value="العربية"
+          label={this.props.intl.formatMessage(messages['account.settings.field.language.proficiencies'])}
+          isEditable={false}
+        />
           <AdditionalProfileFieldsSlot />
         </div>
         <div className="account-section pt-3 mb-6" id="social-media">
@@ -782,15 +795,14 @@ class AccountSettingsPage extends React.Component {
           </h2>
 
           <BetaLanguageBanner />
-          <EditableSelectField
+          <EditableField
             name="siteLanguage"
-            type="select"
-            options={this.props.siteLanguageOptions}
-            value={this.props.siteLanguage.draft !== undefined ? this.props.siteLanguage.draft : this.context.locale}
+            type="text"
+            value="العربية"
             label={this.props.intl.formatMessage(messages['account.settings.field.site.language'])}
-            helpText={this.props.intl.formatMessage(messages['account.settings.field.site.language.help.text'])}
-            {...editableFieldProps}
+            isEditable={false}
           />
+
           <EditableSelectField
             name="time_zone"
             type="select"
