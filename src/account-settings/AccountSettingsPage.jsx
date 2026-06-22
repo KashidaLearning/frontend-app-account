@@ -575,7 +575,7 @@ class AccountSettingsPage extends React.Component {
           <EditableField
             name="username"
             type="text"
-            value={this.props.formValues.name || this.props.formValues.username}
+            value={`FULLNAME TEST ${this.props.formValues.name || this.props.formValues.username}`}
             label={this.props.intl.formatMessage(messages['account.settings.field.username'])}
             helpText={this.props.intl.formatMessage(
               messages['account.settings.field.username.help.text'],
