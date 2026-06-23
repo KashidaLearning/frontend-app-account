@@ -575,7 +575,7 @@ class AccountSettingsPage extends React.Component {
           <EditableField
             name="username"
             type="text"
-            value={`FULLNAME TEST ${this.props.formValues.name || this.props.formValues.username}`}
+            value={this.props.formValues.username}
             label={this.props.intl.formatMessage(messages['account.settings.field.username'])}
             helpText={this.props.intl.formatMessage(
               messages['account.settings.field.username.help.text'],
@@ -819,7 +819,7 @@ class AccountSettingsPage extends React.Component {
           />
         </div>
 
-     {/*    <div className="account-section pt-3 mb-5" id="linked-accounts" ref={this.navLinkRefs['#linked-accounts']}>
+        <div className="account-section pt-3 mb-5" id="linked-accounts" ref={this.navLinkRefs['#linked-accounts']}>
           <h2 className="section-heading h4 mb-3">{this.props.intl.formatMessage(messages['account.settings.section.linked.accounts'])}</h2>
           <p>
             {this.props.intl.formatMessage(
@@ -829,7 +829,7 @@ class AccountSettingsPage extends React.Component {
           </p>
           <ThirdPartyAuth />
         </div>
- */}
+
         {getConfig().ENABLE_ACCOUNT_DELETION && (
           <div className="account-section pt-3 mb-5" id="delete-account" ref={this.navLinkRefs['#delete-account']}>
             <DeleteAccount
