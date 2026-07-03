@@ -175,7 +175,7 @@ $fa-font-path: "~font-awesome/fonts";
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap');
 
 .page__account-settings {
-  background-color: rgba(255, 255, 255, 0) !important;
+  background: linear-gradient(90deg, #7189ac 0%, #a9bbd1 100%) !important;
   direction: rtl;
 
   --pgn-color-primary: #110d7c;
@@ -187,11 +187,13 @@ $fa-font-path: "~font-awesome/fonts";
     color: #110d7c !important;
     font-weight: 400;
     line-height: 1.8em;
+    text-align: right;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'IBM Plex Sans Arabic', sans-serif !important;
     color: #110d7c !important;
+    text-align: right;
   }
 
   a, .pgn__hyperlink {
@@ -208,12 +210,5 @@ $fa-font-path: "~font-awesome/fonts";
     color: #110d7c !important;
     text-align: right;
     direction: rtl;
-  }
-
-  .row {
-    direction: rtl;
-  }
-  .col-md-3, .col-md-9 {
-    text-align: right;
   }
 }
