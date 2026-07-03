@@ -168,3 +168,52 @@ $fa-font-path: "~font-awesome/fonts";
   }
 }
 
+// ==========================================================================
+// Account pages — match Privacy/Terms page styling
+// ==========================================================================
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap');
+
+.page__account-settings {
+  background-color: rgba(255, 255, 255, 0) !important;
+  direction: rtl;
+
+  --pgn-color-primary: #110d7c;
+  --pgn-color-primary-base: #110d7c;
+  --pgn-color-link-color: #110d7c;
+
+  &, p, span, div, label, li, td, th {
+    font-family: 'IBM Plex Sans Arabic', sans-serif !important;
+    color: #110d7c !important;
+    font-weight: 400;
+    line-height: 1.8em;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'IBM Plex Sans Arabic', sans-serif !important;
+    color: #110d7c !important;
+  }
+
+  a, .pgn__hyperlink {
+    font-family: 'IBM Plex Sans Arabic', sans-serif !important;
+    color: #110d7c !important;
+  }
+
+  .btn, .btn-link, .btn-tertiary, .btn-outline-primary {
+    font-family: 'IBM Plex Sans Arabic', sans-serif !important;
+  }
+
+  .form-control, .form-label, input, select, textarea {
+    font-family: 'IBM Plex Sans Arabic', sans-serif !important;
+    color: #110d7c !important;
+    text-align: right;
+    direction: rtl;
+  }
+
+  .row {
+    direction: rtl;
+  }
+  .col-md-3, .col-md-9 {
+    text-align: right;
+  }
+}
